@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <title>Réservation de "Vélô" à Toulouse</title>
+    <meta charset="utf-8">
+    <!--Encodage-->
+    <meta name="description" content="Trouvez un Vélô sur Toulouse et reserver le !">
+    <!--Description du sites et de sa fonction-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--viewport pour le responsive web design-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js" integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg==" crossorigin=""></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="dist/MarkerCluster.css" type="text/css">
+    <link rel="stylesheet" href="dist/MarkerCluster.Default.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+    <script src="dist/leaflet.markercluster.js"></script>
+</head>
+
+<body>
+    <header>
+        <!--"barre" du site avec titre et logo-->
+        <img src="img/logo.png" alt="logo">
+        <h1><a href="#tuto">Vélo Toulouse</a></h1>
+        <div class="navbar">
+            <div class="menuDeroulant">
+                <button class="menuBtn"><i class="fas fa-bars"></i></button>
+                <div class="index">
+                    <a href="#reservMap">Map</a>
+                    <a href="#sectionLocation">Reservation</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section id="tuto">
+        <!--Slider et marche a suivre pour reserver un vélô-->
+        <div class="container">
+            <h2>COMMENT RESERVER SON VELO</h2>
+            <div id="diaporama">
+                <figure class="diapo">
+                    <img src="img/etape1.png" alt="diapo1">
+                    <!--Lien image de la diapo 1-->
+                    <figcaption>
+                        <h3><span>Etape 1</span></h3>
+                        <p id="iconeBloc">Commencer par chercher votre station sur la carte, zoomer grâce aux boutons <span class="fas fa-plus"></span> <span class="fas fa-minus"></span>
+                            <!--contenue texte de la diapo 1-->
+                    </figcaption>
+                </figure>
+                <figure class="diapo">
+                    <img src="img/etape2.png" alt="diapo 1">
+                    <!--Lien image de la diapo 2-->
+                    <figcaption>
+                        <h3><span>Etape 2</span></h3>
+                        <p>une fois votre station trouvée, renseigner votre nom et prénom </p>
+                        <!--contenue texte de la diapo 2-->
+                    </figcaption>
+                </figure>
+                <figure class="diapo">
+                    <img src="img/etape3.png" alt="diapo 2">
+                    <!--Lien image de la diapo 3-->
+                    <figcaption>
+                        <h3><span>Etape 3</span></h3>
+                        <p>remplissez le formulaire, pour le valider signer dans le champ prévu à cet effet</p>
+                        <!--contenue texte de la diapo 3-->
+                    </figcaption>
+                </figure>
+                <figure class="diapo">
+                    <img src="img/etape4.png" alt="diapo 3">
+                    <!--Lien image de la diapo 4-->
+                    <figcaption>
+                        <h3><span>Etape 4</span></h3>
+                        <p>Bravo ! Votre réservation est validée pour 20 minutes, vous pouvez l'annuler en cliquant sur annuler.</p>
+                        <!--contenue texte de la diapo 4-->
+                    </figcaption>
+                </figure>
+            </div>
+
+        </div>
+        <div id="blocBoutton">
+            <!-- Bouton du slider -->
+            <button id="precedent"><i class="fas fa-arrow-left"></i></button>
+            <button id="suivant"><i class="fas fa-arrow-right"></i></button>
+            <button id="lecture"><i id="iconeLecture" class="fas fa-pause"></i></button>
+        </div>
+        <!-- Fin des boutons du slider -->
+    </section>
+    <!--Section contenant la map, l'info sur la station selectionné et le canvas-->
+    <section id="reservMap">
+        <h3>Reservez votre vélo !</h3>
+        <p id="legendeResponsive">
+            <img src="img/marker.png" alt="banner1"> : + 10 vélos
+            <img src="img/markerorange.png" alt="banner1"> : - 10 vélos
+            <img src="img/markerrouge.png" alt="banner1"> : 0 vélos </p>
+        <p id="legende">
+            <img src="img/marker.png" alt="banner1"> : + 10 vélos<br>
+            <img src="img/markerorange.png" alt="banner1"> : - 10 vélos<br>
+            <img src="img/markerrouge.png" alt="banner1"> : 0 vélos </p>
+        <div id="containerMap">
+
+            <!--id map pour le fichier mapbox.js-->
+            <div id="map"></div>
+
+            <div id="containerResa">
+
+                <div id="infoStation">
+                    <h3>Détails de la station<br /></h3>
+                    <p id="blocInfo">Station : <span id="stationNom"></span> <br> Adresse :<span id="stationAdresse"></span><br> Nombres de places :<span id="stationPlaceVelo"></span><br> Nombres de vélos :<span id="stationVeloDispo"></span><br>Status :<span id="statusStation"></span><br></p>
+                    <input type="text" id="nom" placeholder="nom" onfocus="bookingObject.verificationVide()" onblur="bookingObject.verificationVide()" onkeyup="bookingObject.verificationVide()" />
+                    <input type="text" id="prenom" placeholder="prenom" onfocus="bookingObject.verificationVide()" onblur="bookingObject.verificationVide()" onkeyup="bookingObject.verificationVide()" /><br>
+                    <button id="soumettre"><i class="fas fa-arrow-right"></i></button>
+                    <div id="containerCanvas">
+                        <canvas id="canvas"></canvas>
+                        <button id="fermer"><i class="fa fa-window-close" aria-hidden="true"></i></button>
+                        <button id="gomme"><i class="fa fa-eraser" aria-hidden="true"></i></button>
+                        <button id="valider"><a href="#sectionLocation"><i class="fas fa-check"></i></a></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </section>
+    <!-- Fin section reserv-map -->
+    <!-- Section comprenant le timer et la réservation en cours -->
+    <section id="sectionLocation">
+        <div id="blocDecompte">
+            <span id="decompte"></span>
+            <span id="minute"></span>
+            <span id="seconde"></span> <br>
+            <button type="button" id="annulerResa">Annuler</button>
+        </div>
+    </section>
+
+
+    <!-- Fin sectionLocation -->
+    <footer>
+        <!-- Footer contenant les liens vers les réseaux sociaux -->
+        <div class="reseauxSociaux">
+            <a class="social facebook" href="https://fr-fr.facebook.com/velov.officiel"><i class="fab fa-facebook-f"></i></a>
+            <a class="social twitter" href="https://twitter.com/hashtag/vélouse"><i class="fab fa-twitter"></i></a>
+            <a class="social linkedin" href="https://www.linkedin.com/company/mairie-de-toulouse?originalSubdomain=fr"><i class="fab fa-linkedin"></i></a>
+            <a class="social instagram" href="https://www.instagram.com/velotoulouse31000/?hl=fr"><i class="fab fa-instagram"></i></a>
+        </div>
+    </footer>
+    <!-- Fin footer -->
+    <!-- Appel des scripts de la page -->
+
+    <script src="js/slider.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/booking.js"></script>
+    <script src="js/canvas.js"></script>
+    <script src="js/timer.js"></script>
+    <script src="js/main.js"></script>
+    <!-- Fin d'appel des scripts -->
+
+</body>
+
+</html>
