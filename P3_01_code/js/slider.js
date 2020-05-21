@@ -38,8 +38,11 @@ class Slider {
             delai = setTimeout(diapoObject.boucle, 5000);
         }
         //--- Play/pause ---//
-    lectureSlide() {
-            lecture = !lecture
+    stop() {
+        lecture = !lecture
+    }
+    lecture() {
+            lecture = true;
         }
         //--- Keycode pour fleches gauche et droite ---//
     clavier(e) {
@@ -60,22 +63,35 @@ class Slider {
         //--- Boutton et évènements ---//
     boutonsFonction() {
         boutonSuivant.addEventListener('click', function() {
-            diapoObject.slideSuivant()
-            diapoObject.reinitialiser()
-            delai
+            if (lecture = !lecture) {
+                diapoObject.reinitialiser();
+                diapoObject.slideSuivant();
+                diapoObject.stop();
+            } else {
+                diapoObject.reinitialiser();
+                diapoObject.slideSuivant();
+            }
         });
         boutonPrecedent.addEventListener('click', function() {
-            diapoObject.slidePrecedent()
-            diapoObject.reinitialiser()
-            delai
+            if (lecture = !lecture) {
+                diapoObject.reinitialiser();
+                diapoObject.slidePrecedent();
+                diapoObject.stop();
+            } else {
+                diapoObject.reinitialiser();
+                diapoObject.slidePrecedent();
+            }
         });
         boutonLecture.addEventListener('click', function() {
-            diapoObject.lectureSlide()
-            diapoObject.reinitialiser()
+
             if (iconeBoutonLecture.classList.contains('fa-play')) {
                 iconeBoutonLecture.classList.remove('fa-play');
                 iconeBoutonLecture.classList.add('fa-pause');
+                diapoObject.lecture()
+                diapoObject.reinitialiser()
             } else {
+                diapoObject.stop()
+                diapoObject.reinitialiser()
                 iconeBoutonLecture.classList.remove('fa-pause');
                 iconeBoutonLecture.classList.add('fa-play');
             }
